@@ -24,6 +24,9 @@ public class ResourceViewController {
     private TextField resourceNameField;
 
     @FXML
+    private TextField resourceQuantityField;
+
+    @FXML
     private Label resourceLabel;
 
     @FXML
@@ -34,6 +37,7 @@ public class ResourceViewController {
 
     private int currentResourceIndex = 0;
     List<String> resourceNames = new ArrayList<>();
+    List<Integer> resourceQuantity = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -44,6 +48,8 @@ public class ResourceViewController {
     @FXML
     private void handleNext() {
         String resourceName = resourceNameField.getText().trim();
+        String quantityName = resourceQuantityField.getText().trim();
+        int quantity = Integer.parseInt(resourceQuantityField.getText());
 
         // Verificar se o nome do recurso está vazio
         if (resourceName.isEmpty()) {
@@ -55,11 +61,15 @@ public class ResourceViewController {
         }
 
         // Armazenar o nome do recurso
-        resourceNames.add(resourceName);
+        if (resourceName != "" && quantityName != "") {
+            resourceNames.add(resourceName);
+            resourceQuantity.add(quantity);
+        }
         currentResourceIndex++;
 
         // Limpar o campo de entrada para o próximo recurso
         resourceNameField.clear();
+        resourceQuantityField.clear();
 
         // Atualizar o texto da label para o próximo recurso
         if (currentResourceIndex < ResourceManager.EjMax) {
@@ -75,6 +85,10 @@ public class ResourceViewController {
     @FXML
     private void handleStartSimulation(ActionEvent event) {
         try {
+            ResourceManager.resourceQuantityArr = new Integer[resourceQuantity.size() + 1];
+            for (int i = 0; i < resourceQuantity.size(); i++) {
+                ResourceManager.resourceQuantityArr[i] = resourceQuantity.get(i);
+            }
             ResourceManager.initializeResources(currentResourceIndex + 1);
             for (int i = 0; i < resourceNames.size(); i++) {
                 ResourceManager.resourceNames[i] = resourceNames.get(i);

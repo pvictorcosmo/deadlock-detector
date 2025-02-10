@@ -16,6 +16,7 @@
 
     <!-- Campo para inserir o nome do recurso -->
     <TextField fx:id="resourceNameField" promptText="Enter name for resource"/>
+    <TextField fx:id="resourceQuantityField" promptText="Enter Quantity for resource"/>
 
     <!-- Botão para avançar para o próximo recurso ou iniciar a simulação -->
     <Button text="Next" onAction="#handleNext" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" fx:id="nextButton"/>

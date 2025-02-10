@@ -21,7 +21,7 @@ public class Processes extends Thread {
     private Queue<Integer> requestQueue = new LinkedList<>();
     private Queue<Integer> acquiredQueue = new LinkedList<>();
     private List<Integer> releaseTimes = new ArrayList<>();
-    public static Semaphore mutex = new Semaphore(1);
+    // public static Semaphore OperatingSystem.mutex = new Semaphore(1);
     private SimulationSetupController controller;
 
     public Processes(int processId, int ts, int tu, SimulationSetupController controller) {
@@ -40,22 +40,27 @@ public class Processes extends Thread {
 
     @Override
     public void run() {
+
         while (alive) {
+
             try {
                 Thread.sleep(1000);
                 t++;
+                System.out.println("alive: " + alive);
                 if (t % ts == 0 && alive) {
-                    mutex.acquire();
+                    OperatingSystem.mutex.acquire();
                     int resourceIndex = selectRandomResource();
+                    System.out.println("resourceIndex: " + resourceIndex);
                     requestResource(resourceIndex, processId);
                     releaseTimes.add(t + tu);
-                    mutex.release();
+                    OperatingSystem.mutex.release();
                 }
+                System.out.println("releaseTimes: " + releaseTimes);
                 if (!releaseTimes.isEmpty() && releaseTimes.get(0) == t) {
-                    mutex.acquire();
+                    OperatingSystem.mutex.acquire();
                     releaseResource();
                     releaseTimes.remove(0);
-                    mutex.release();
+                    OperatingSystem.mutex.release();
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -79,6 +84,7 @@ public class Processes extends Thread {
         controller.appendLog("Resource " + resource + " was requested by process: " + processId);
         requestQueue.add(resource);
         try {
+            System.out.println("resources: " + resource);
             ResourceManager.A[resource].acquire();
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
@@ -91,6 +97,7 @@ public class Processes extends Thread {
     }
 
     private void releaseResource() {
+        System.out.println("release resource");
         if (!acquiredQueue.isEmpty()) {
             int resource = acquiredQueue.poll();
             ResourceManager.A[resource].release();
@@ -117,7 +124,8 @@ public class Processes extends Thread {
         int resource;
 
         do {
-            resource = (int) (Math.random() * ResourceManager.E.length);
+            resource = (int) (Math.random() * ResourceManager.resourceQuantityArr.length);
+            System.out.println("values random resource" + resource);
         } while (countOccurrences(acquiredQueue, resource) + 1 > ResourceManager.E[resource]);
 
         return resource;

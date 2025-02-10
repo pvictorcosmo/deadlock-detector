@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SimulationSetupController {
-
+    OperatingSystem os;
     @FXML
     private TextField tsField;
 
@@ -91,6 +91,7 @@ public class SimulationSetupController {
                         Processes newProcess = new Processes(processId, ts, tu, this);
                         newProcess.start();
                         processes.add(newProcess);
+                        ResourceManager.processes.add(newProcess);
 
                         // Atualizando a interface
                         processListView.getItems().add("Process " + processId + " - ts: " + ts + ", tu: " + tu);
@@ -114,63 +115,31 @@ public class SimulationSetupController {
         // Criar o dialog de entrada para 'ts' e 'tu'
         TextInputDialog tsDialog = new TextInputDialog();
         tsDialog.setTitle("Process Details");
-        tsDialog.setHeaderText("Enter the ts value:");
-        tsDialog.setContentText("ts:");
+        tsDialog.setHeaderText("Enter the id process to kill");
+        tsDialog.setContentText("id process:");
 
         // Estilizando diretamente o TextInputDialog
         tsDialog.getDialogPane().setStyle("-fx-background-color: #fafafa; -fx-border-radius: 10px;");
         tsDialog.getDialogPane().lookup(".label").setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         tsDialog.getDialogPane().lookup(".content").setStyle("-fx-font-size: 14px; -fx-color: #555;");
         tsDialog.setResizable(true);
+        Optional<String> tsResult = tsDialog.showAndWait();
+        int pDialog = Integer.parseInt(tsResult.get().trim());
+
+        Processes p = findProcessById(processes, pDialog);
+        os.terminateProcess(p);
 
         // Obter a entrada para ts
-        Optional<String> tsResult = tsDialog.showAndWait();
-        if (tsResult.isPresent()) {
-            try {
-                int ts = Integer.parseInt(tsResult.get().trim());
 
-                // Agora o dialog para 'tu'
-                TextInputDialog tuDialog = new TextInputDialog();
-                tuDialog.setTitle("Process Details");
-                tuDialog.setHeaderText("Enter the tu value:");
-                tuDialog.setContentText("tu:");
+    }
 
-                // Estilizando o segundo TextInputDialog
-                tuDialog.getDialogPane().setStyle("-fx-background-color: #fafafa; -fx-border-radius: 10px;");
-                tuDialog.getDialogPane().lookup(".label").setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-                tuDialog.getDialogPane().lookup(".content").setStyle("-fx-font-size: 14px; -fx-color: #555;");
-                tuDialog.setResizable(true);
-
-                Optional<String> tuResult = tuDialog.showAndWait();
-                if (tuResult.isPresent()) {
-                    try {
-                        int tu = Integer.parseInt(tuResult.get().trim());
-
-                        if (ts <= 0 || tu <= 0) {
-                            throw new NumberFormatException();
-                        }
-
-                        // Criando o processo
-                        int processId = processes.size() + 1;
-                        Processes newProcess = new Processes(processId, ts, tu, this);
-                        newProcess.start();
-                        processes.add(newProcess);
-
-                        // Atualizando a interface
-                        processListView.getItems().add("Process " + processId + " - ts: " + ts + ", tu: " + tu);
-
-                        // Adicionando o log de evento
-                        eventLogTextArea
-                                .appendText("Created Process " + processId + " - ts: " + ts + ", tu: " + tu + "\n");
-
-                    } catch (NumberFormatException e) {
-                        showAlert("Error", "Invalid input for tu. Please enter a valid number.");
-                    }
-                }
-            } catch (NumberFormatException e) {
-                showAlert("Error", "Invalid input for ts. Please enter a valid number.");
+    public Processes findProcessById(List<Processes> processes, int id) {
+        for (Processes process : processes) {
+            if (process.getProcessId() == id) {
+                return process;
             }
         }
+        return null; // Retorna null se não encontrar
     }
 
     @FXML
@@ -183,7 +152,7 @@ public class SimulationSetupController {
         }
 
         // Inicia o sistema operacional
-        OperatingSystem os = new OperatingSystem(processes);
+        os = new OperatingSystem(processes, this);
         os.start();
 
         // Exemplo de log de evento quando a simulação começa
