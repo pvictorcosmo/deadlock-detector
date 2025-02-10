@@ -1,30 +1,13 @@
 package ifce.projects.model;
 
 public class Resource {
-    private String nome;
-    private int id;
-    private int quantidade;
+    public String name;
+    public int id;
+    public int quantityResources;
 
-    public Resource(String nome, int id, int quantidade) {
-        this.nome = nome;
+    public Resource(String name, int id, int quantityResources) {
+        this.name = name;
         this.id = id;
-        this.quantidade = quantidade;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    @Override
-    public String toString() {
-        return nome + " (ID: " + id + ", Qtd: " + quantidade + ")";
+        this.quantityResources = quantityResources;
     }
 }

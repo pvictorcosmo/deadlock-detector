@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Alert?>
+<?import javafx.scene.control.Alert.AlertType?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="ifce.projects.controller.ResourceViewController" spacing="10" alignment="CENTER" style="-fx-padding: 20; -fx-background-color: #f0f0f0;">
+    <Label text="Enter the name of each resource (You can stop at any time)" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- Label para mostrar qual recurso está sendo solicitado -->
+    <Label fx:id="resourceLabel" text="Enter name for resource 1"/>
+
+    <!-- Campo para inserir o nome do recurso -->
+    <TextField fx:id="resourceNameField" promptText="Enter name for resource"/>
+
+    <!-- Botão para avançar para o próximo recurso ou iniciar a simulação -->
+    <Button text="Next" onAction="#handleNext" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" fx:id="nextButton"/>
+    
+    <!-- Botão de Start Simulation inicialmente invisível -->
+    <Button text="Start Simulation" onAction="#handleStartSimulation" style="-fx-background-color: #2196F3; -fx-text-fill: white;" fx:id="startButton"/>
+</VBox>

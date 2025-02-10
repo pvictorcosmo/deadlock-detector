@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.paint.Color?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="ifce.projects.controller.SimulationSetupController">
+    <!-- Container principal para centralizar os elementos -->
+    <VBox alignment="CENTER" spacing="20" layoutX="20" layoutY="20" AnchorPane.leftAnchor="20"
+        AnchorPane.topAnchor="20">
+        <!-- Título da tela e campos de entrada TS e TU -->
+
+        <!-- Botão para adicionar processo -->
+        <Button text="Add Process" layoutX="20" layoutY="150" onAction="#handleAddProcess"
+            prefWidth="200"
+            style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" />
+        <Button text="Remove Process" layoutX="20" layoutY="150" onAction="#handleRemoveProcess"
+            prefWidth="200"
+            style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 5;" />
+
+        <!-- Lista de processos -->
+        <ListView fx:id="processListView" prefWidth="400" prefHeight="150"
+            style="-fx-background-color: #f4f4f4; -fx-border-color: #ddd; -fx-border-radius: 5; -fx-padding: 10;" />
+
+        <!-- Área de texto para o log de eventos -->
+        <TextArea fx:id="eventLogTextArea" editable="false" wrapText="true" prefWidth="500"
+            prefHeight="200"
+            style="-fx-background-color: #f4f4f4; -fx-border-color: #ddd; -fx-border-radius: 5; -fx-padding: 10; -fx-font-family: 'Consolas'; -fx-font-size: 14px;" />
+    </VBox>
+</AnchorPane>
