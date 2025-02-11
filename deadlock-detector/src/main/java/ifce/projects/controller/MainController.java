@@ -1,6 +1,12 @@
 package ifce.projects.controller;
 
-import ifce.projects.model.ResourceManager;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import ifce.projects.model.DeadlockDetector;
+import ifce.projects.model.Processo;
+import ifce.projects.model.Recurso;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
@@ -16,6 +22,11 @@ public class MainController {
     private TextField numResourcesField;
 
     @FXML
+    private void initalize() {
+      
+    }
+
+    @FXML
     private void handleNext() {
         try {
             int numResources = Integer.parseInt(numResourcesField.getText());
@@ -25,7 +36,7 @@ public class MainController {
             }
 
             // Inicializar recursos com o número informado
-            ResourceManager.EjMax = numResources;
+            // ResourceManager.EjMax = numResources;
             String fxmlPath = "/ifce/projects/view/ResourceView.fxml";
 
             // Cria um FXMLLoader
